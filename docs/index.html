@@ -14,6 +14,7 @@
 <body>
 
 <div id="app">
+    <button v-on:click="resetGame()">Restart</button>
     <div class="game-grid">
         <game-card
             v-for="(card, i) in $root.gameData.cards"

@@ -12805,6 +12805,22 @@ var app = new Vue({
   data: {
     gameData: {}
   },
+  methods: {
+    resetGame: function resetGame() {
+      var _this = this;
+
+      // We gotta unset the states before resetting the cards else the css transition will expose the new emoji positions
+      for (var i = 0; i < 16; i++) {
+        this.gameData.cards[i].active = false;
+        this.gameData.cards[i].matched = false;
+      }
+
+      ;
+      window.setTimeout(function () {
+        _this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+      }, 250);
+    }
+  },
   created: function created() {
     this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
   }
