@@ -1,0 +1,85 @@
+.game-grid {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0 0 0 $spacing;
+
+    * {
+        outline: none;
+    }
+
+    .game-card {
+
+        display: inline-block;
+
+        width: calc((100% - #{$spacing}*5) / 4);
+
+        height: auto;
+        
+        margin-right: $spacing;
+        margin-top: $spacing;
+
+        perspective: 1000px;
+
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+
+        &:focus .game-card__inner {
+            transform: rotateY(180deg);
+        }
+
+        .game-card__inner {
+            
+            position: relative;
+            width: 100%;
+            height: auto;
+            
+            &::after {
+                content: "";
+                display: block;
+                padding-bottom: 100%;
+            }
+
+            border-radius: $spacing;
+
+            transition: transform 0.2s;
+            transform-style: preserve-3d;
+        }
+
+        .game-card__front, .game-card__back {
+            &::after {
+                content: "";
+                display: block;
+                padding-bottom: 100%;
+            }
+            
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+
+            border-radius: $spacing;
+
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-card__front {
+            background-color: $accent;
+        }
+
+        .game-card__back {
+            background-color: darken($white, 5%);
+            color: $accent;
+            transform: rotateY(180deg);
+        }
+    }
+}
