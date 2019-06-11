@@ -1,5 +1,5 @@
 <template>
-    <div class="game-card" tabindex="0">
+    <div class="game-card" tabindex="0" v-on:click="doClick()">
         <div class="game-card__inner">
             <div class="game-card__front">
                 {{ id }}
@@ -13,15 +13,17 @@
 
 <script>
     export default {
-        props: {
-            id: Number,
-            emoji: String,
-            sibling: Number,
-            active: Boolean,
-            matched: Boolean
-        },
         data: function() {
             return {
+            }
+        },
+        props: {
+            id: Number,
+            emoji: String
+        },
+        methods: {
+            doClick: function() {
+                alert(this.id);
             }
         }
     }

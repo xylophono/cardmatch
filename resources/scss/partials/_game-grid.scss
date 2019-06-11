@@ -29,7 +29,7 @@
             transform: scale(1.05);
         }
 
-        &:focus .game-card__inner {
+        &.active .game-card__inner {
             transform: rotateY(180deg);
         }
 
@@ -42,7 +42,7 @@
             &::after {
                 content: "";
                 display: block;
-                padding-bottom: 100%;
+                padding-bottom: 75%;
             }
 
             border-radius: $spacing;
@@ -55,7 +55,7 @@
             &::after {
                 content: "";
                 display: block;
-                padding-bottom: 100%;
+                padding-bottom: 75%;
             }
             
             position: absolute;
@@ -80,6 +80,7 @@
             background-color: darken($white, 5%);
             color: $accent;
             transform: rotateY(180deg);
+            font-size: 3rem;
         }
     }
 }

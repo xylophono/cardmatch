@@ -17,11 +17,8 @@
     <div class="game-grid">
         <game-card
             v-for="(card, i) in $root.gameData.cards"
-            v-bind:id="parseInt(i)"
-            v-bind:emoji="card.emoji"
-            v-bind:sibling="card.sibling"
-            v-bind:active="card.active"
-            v-bind:matched="card.matched"
+            :id="parseInt(i)"
+            :emoji="card.emoji"
         ></game-card>
     </div>
 </div>

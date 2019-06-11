@@ -109,15 +109,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    id: Number,
-    emoji: String,
-    sibling: Number,
-    active: Boolean,
-    matched: Boolean
-  },
   data: function data() {
     return {};
+  },
+  props: {
+    id: Number,
+    emoji: String
+  },
+  methods: {
+    doClick: function doClick() {
+      alert(this.id);
+    }
   }
 });
 
@@ -606,17 +608,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "game-card", attrs: { tabindex: "0" } }, [
-    _c("div", { staticClass: "game-card__inner" }, [
-      _c("div", { staticClass: "game-card__front" }, [
-        _vm._v("\n            " + _vm._s(_vm.id) + "\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "game-card__back" }, [
-        _vm._v("\n            " + _vm._s(_vm.emoji) + "\n        ")
+  return _c(
+    "div",
+    {
+      staticClass: "game-card",
+      attrs: { tabindex: "0" },
+      on: {
+        click: function($event) {
+          return _vm.doClick()
+        }
+      }
+    },
+    [
+      _c("div", { staticClass: "game-card__inner" }, [
+        _c("div", { staticClass: "game-card__front" }, [
+          _vm._v("\n            " + _vm._s(_vm.id) + "\n        ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "game-card__back" }, [
+          _vm._v("\n            " + _vm._s(_vm.emoji) + "\n        ")
+        ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

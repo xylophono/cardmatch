@@ -220,7 +220,7 @@ h6,
   transform: scale(1.05);
 }
 
-.game-grid .game-card:focus .game-card__inner {
+.game-grid .game-card.active .game-card__inner {
   transform: rotateY(180deg);
 }
 
@@ -236,7 +236,7 @@ h6,
 .game-grid .game-card .game-card__inner::after {
   content: "";
   display: block;
-  padding-bottom: 100%;
+  padding-bottom: 75%;
 }
 
 .game-grid .game-card .game-card__front,
@@ -258,7 +258,7 @@ h6,
 .game-grid .game-card .game-card__back::after {
   content: "";
   display: block;
-  padding-bottom: 100%;
+  padding-bottom: 75%;
 }
 
 .game-grid .game-card .game-card__front {
@@ -269,5 +269,6 @@ h6,
   background-color: #f2f2f2;
   color: hotpink;
   transform: rotateY(180deg);
+  font-size: 3rem;
 }
 
