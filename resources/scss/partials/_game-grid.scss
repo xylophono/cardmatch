@@ -4,7 +4,7 @@
     width: 100%;
 
     margin: 0;
-    padding: 0 0 0 $spacing;
+    padding: $spacing 0 0 $spacing;
 
     *, *:focus, *:hover {
         outline: none;
@@ -14,12 +14,12 @@
 
         display: inline-block;
 
-        width: calc((100% - #{$spacing}*5) / 4);
+        width: calc((100% - #{$spacing}*4) / 4);
 
         height: auto;
         
         margin-right: $spacing;
-        margin-top: $spacing;
+        margin-bottom: $spacing;
 
         perspective: 1000px;
 
@@ -31,6 +31,15 @@
 
         &.active .game-card__inner {
             transform: rotateY(180deg);
+        }
+
+        &.matched .game-card__inner {
+            transform: rotateY(180deg);
+            cursor: default;
+
+            .game-card__back {
+                background-color: darken($white, 10%);
+            }
         }
 
         .game-card__inner {
@@ -81,6 +90,9 @@
             color: $accent;
             transform: rotateY(180deg);
             font-size: 3rem;
+            @media screen and (max-width: $break-mobile) {
+                font-size: 2rem;
+            }
         }
     }
 }
