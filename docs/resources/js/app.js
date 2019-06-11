@@ -108,6 +108,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -118,7 +125,39 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     doClick: function doClick() {
-      alert(this.id);
+      var _this = this;
+
+      // We're only doing anything if the card hasn't already been matched and we don't already have 2 active cards
+      if (!this.$root.gameData.cards[this.id].matched && this.$root.gameData.active.length < 2) {
+        // Activate the card and add to the active array
+        this.$root.gameData.cards[this.id].active = true;
+        this.$root.gameData.active.push(this.id); //If there's only one card active we can just carry on
+
+        if (this.$root.gameData.active.length == 1) {
+          return;
+        } // Otherwise we're gonna compare the two cards to see if they're a match and either disable them on success or reflip on failure
+
+
+        var cardA = this.$root.gameData.active[0];
+        var cardB = this.$root.gameData.active[1];
+
+        if (cardA == this.$root.gameData.cards[cardB].sibling) {
+          Array(cardA, cardB).forEach(function (card) {
+            _this.$root.gameData.cards[card].matched = true;
+            _this.$root.gameData.cards[card].active = false;
+          });
+          this.$root.gameData.active = [];
+          return;
+        } // We're gonna throw a lil delay on resetting the unmatched cards so users have time to process it not being a match
+
+
+        window.setTimeout(function () {
+          Array(cardA, cardB).forEach(function (card) {
+            _this.$root.gameData.cards[card].active = false;
+          });
+          _this.$root.gameData.active = [];
+        }, 500);
+      }
     }
   }
 });
@@ -612,6 +651,10 @@ var render = function() {
     "div",
     {
       staticClass: "game-card",
+      class: {
+        active: this.$root.gameData.cards[this.id].active,
+        matched: this.$root.gameData.cards[this.id].matched
+      },
       attrs: { tabindex: "0" },
       on: {
         click: function($event) {
@@ -621,9 +664,7 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "game-card__inner" }, [
-        _c("div", { staticClass: "game-card__front" }, [
-          _vm._v("\n            " + _vm._s(_vm.id) + "\n        ")
-        ]),
+        _c("div", { staticClass: "game-card__front" }),
         _vm._v(" "),
         _c("div", { staticClass: "game-card__back" }, [
           _vm._v("\n            " + _vm._s(_vm.emoji) + "\n        ")
@@ -12786,7 +12827,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _default = function _default() {
   _classCallCheck(this, _default);
 
-  this.emojis = Array('😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️'); // Shuffle emojis, grab 8
+  // Some data we're gonna retain
+  this.cards = {};
+  this.active = []; // The emojis we can pick from
+
+  this.emojis = ['😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️']; // Shuffle emojis, grab 8
 
   this.emojis.sort(function () {
     return 0.5 - Math.random();
@@ -12796,9 +12841,9 @@ var _default = function _default() {
   this.emojis = this.emojis.concat(this.emojis);
   this.emojis.sort(function () {
     return 0.5 - Math.random();
-  });
+  }); // Cycle through the emoji to construct the card data, cache unpaired cards to record their sibling
+
   this.tempMap = {};
-  this.cards = {}; // Cycle through the emoji to construct the card data, cache unpaired cards to record their sibling
 
   for (var i = 0; i < this.emojis.length; i++) {
     this.cards[i] = {

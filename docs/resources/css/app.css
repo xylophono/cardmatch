@@ -197,7 +197,7 @@ h6,
   display: block;
   width: 100%;
   margin: 0;
-  padding: 0 0 0 1rem;
+  padding: 1rem 0 0 1rem;
 }
 
 .game-grid *,
@@ -208,10 +208,10 @@ h6,
 
 .game-grid .game-card {
   display: inline-block;
-  width: calc((100% - 1rem*5) / 4);
+  width: calc((100% - 1rem*4) / 4);
   height: auto;
   margin-right: 1rem;
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -222,6 +222,15 @@ h6,
 
 .game-grid .game-card.active .game-card__inner {
   transform: rotateY(180deg);
+}
+
+.game-grid .game-card.matched .game-card__inner {
+  transform: rotateY(180deg);
+  cursor: default;
+}
+
+.game-grid .game-card.matched .game-card__inner .game-card__back {
+  background-color: #e6e6e6;
 }
 
 .game-grid .game-card .game-card__inner {
@@ -270,5 +279,11 @@ h6,
   color: hotpink;
   transform: rotateY(180deg);
   font-size: 3rem;
+}
+
+@media screen and (max-width: 768px) {
+  .game-grid .game-card .game-card__back {
+    font-size: 2rem;
+  }
 }
 

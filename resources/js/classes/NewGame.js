@@ -1,10 +1,16 @@
 export default class {
     constructor() {
-        this.emojis = Array(
+
+        // Some data we're gonna retain
+        this.cards = {};
+        this.active = [];
+
+        // The emojis we can pick from
+        this.emojis = [
             '😃','😂','😍','👿','💩','👻','👌','🤘','👀','🤷','💥','🐵','🐶','🐯',
             '🦄','🐧','🐍','🌷','🦀','🌈','🔥','🍓','🍄','🍔','🍕','🥤','🏆','🏀',
             '🏓','🎮','🎲','✈️','🚀','💣','🎈','📷','❤️'
-        );
+        ];
 
         // Shuffle emojis, grab 8
         this.emojis.sort(function() { return 0.5 - Math.random() });
@@ -14,10 +20,8 @@ export default class {
         this.emojis = this.emojis.concat(this.emojis);
         this.emojis.sort(function() { return 0.5 - Math.random() });
 
-        this.tempMap = {};
-        this.cards = {};
-
         // Cycle through the emoji to construct the card data, cache unpaired cards to record their sibling
+        this.tempMap = {};
         for (let i=0; i < this.emojis.length; i++) {
             this.cards[i] = {
                 emoji: this.emojis[i],
@@ -37,5 +41,6 @@ export default class {
 
         delete this.emojis;
         delete this.tempMap;
+        
     }
 }
