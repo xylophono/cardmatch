@@ -15,10 +15,14 @@
 
 <div id="app">
     <div class="game-grid">
-        <game-card></game-card>
-        <game-card></game-card>
-        <game-card></game-card>
-        <game-card></game-card>
+        <game-card
+            v-for="(card, i) in $root.gameData.cards"
+            v-bind:id="parseInt(i)"
+            v-bind:emoji="card.emoji"
+            v-bind:sibling="card.sibling"
+            v-bind:active="card.active"
+            v-bind:matched="card.matched"
+        ></game-card>
     </div>
 </div>
 

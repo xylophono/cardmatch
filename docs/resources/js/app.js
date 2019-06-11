@@ -109,6 +109,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    id: Number,
+    emoji: String,
+    sibling: Number,
+    active: Boolean,
+    matched: Boolean
+  },
   data: function data() {
     return {};
   }
@@ -599,24 +606,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "game-card", attrs: { tabindex: "0" } }, [
-      _c("div", { staticClass: "game-card__inner" }, [
-        _c("div", { staticClass: "game-card__front" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "game-card__back" }, [
-          _vm._v("\n            hi\n        ")
-        ])
+  return _c("div", { staticClass: "game-card", attrs: { tabindex: "0" } }, [
+    _c("div", { staticClass: "game-card__inner" }, [
+      _c("div", { staticClass: "game-card__front" }, [
+        _vm._v("\n            " + _vm._s(_vm.id) + "\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "game-card__back" }, [
+        _vm._v("\n            " + _vm._s(_vm.emoji) + "\n        ")
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -12736,7 +12738,9 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/GameCard.vue */ "./resources/js/components/GameCard.vue");
+/* harmony import */ var _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/NewGame.js */ "./resources/js/classes/NewGame.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 
 var app = new Vue({
   el: '#app',
@@ -12744,9 +12748,66 @@ var app = new Vue({
     GameCard: _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: {
-    test: 'hello world'
+    gameData: {}
+  },
+  created: function created() {
+    this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/classes/NewGame.js":
+/*!*****************************************!*\
+  !*** ./resources/js/classes/NewGame.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _default = function _default() {
+  _classCallCheck(this, _default);
+
+  this.emojis = Array('😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️'); // Shuffle emojis, grab 8
+
+  this.emojis.sort(function () {
+    return 0.5 - Math.random();
+  });
+  this.emojis.splice(8); // Duplicate them, reshuffle
+
+  this.emojis = this.emojis.concat(this.emojis);
+  this.emojis.sort(function () {
+    return 0.5 - Math.random();
+  });
+  this.tempMap = {};
+  this.cards = {}; // Cycle through the emoji to construct the card data, cache unpaired cards to record their sibling
+
+  for (var i = 0; i < this.emojis.length; i++) {
+    this.cards[i] = {
+      emoji: this.emojis[i],
+      sibling: 0,
+      active: false,
+      matched: false
+    };
+
+    if (this.emojis[i] in this.tempMap) {
+      var target = this.tempMap[this.emojis[i]];
+      this.cards[i].sibling = target;
+      this.cards[target].sibling = i;
+    } else {
+      this.tempMap[this.emojis[i]] = i;
+    }
+  }
+
+  delete this.emojis;
+  delete this.tempMap;
+};
+
+
 
 /***/ }),
 

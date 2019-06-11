@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0 0 0 $spacing;
 
-    * {
+    *, *:focus, *:hover {
         outline: none;
     }
 
