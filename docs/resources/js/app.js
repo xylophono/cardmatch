@@ -114,7 +114,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -655,7 +654,6 @@ var render = function() {
         active: this.$root.gameData.cards[this.id].active,
         matched: this.$root.gameData.cards[this.id].matched
       },
-      attrs: { tabindex: "0" },
       on: {
         click: function($event) {
           return _vm.doClick()

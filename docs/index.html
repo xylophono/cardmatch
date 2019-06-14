@@ -13,15 +13,22 @@
 </head>
 <body>
 
-<div id="app">
-    <button v-on:click="resetGame()">Restart</button>
-    <div class="game-grid">
-        <game-card
-            v-for="(card, i) in $root.gameData.cards"
-            :id="parseInt(i)"
-            :emoji="card.emoji"
-        ></game-card>
-    </div>
+<div id="app" class="container">
+    <nav class="container__header">
+        <button v-on:click="resetGame()">Restart</button>
+    </nav>
+    <main class="container__game">
+        <div class="game-grid">
+            <game-card
+                v-for="(card, i) in $root.gameData.cards"
+                :id="parseInt(i)"
+                :emoji="card.emoji"
+            ></game-card>
+        </div>
+    </main>
+    <footer class="container__footer">
+        asdasd
+    </footer>
 </div>
 
 </body>

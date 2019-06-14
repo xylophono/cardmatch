@@ -5,7 +5,6 @@
             active: this.$root.gameData.cards[this.id].active,
             matched: this.$root.gameData.cards[this.id].matched,
         }"
-        tabindex="0"
         v-on:click="doClick()"
     >
         <div class="game-card__inner">
