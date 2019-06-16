@@ -2,8 +2,12 @@ export default class {
     constructor() {
 
         // Some data we're gonna retain
+        this.pairs = 8;
         this.cards = {};
         this.active = [];
+        this.remaining = this.pairs;
+        this.time = 0;
+        this.clicks = 0;
 
         // The emojis we can pick from
         this.emojis = [
@@ -12,9 +16,9 @@ export default class {
             '🏓','🎮','🎲','✈️','🚀','💣','🎈','📷','❤️'
         ];
 
-        // Shuffle emojis, grab 8
+        // Shuffle emojis, grab the pairs
         this.emojis.sort(function() { return 0.5 - Math.random() });
-        this.emojis.splice(8);
+        this.emojis.splice(this.pairs);
 
         // Duplicate them, reshuffle
         this.emojis = this.emojis.concat(this.emojis);
@@ -39,6 +43,8 @@ export default class {
             }
         }
 
+        //Cleanup
+        delete this.pairs;
         delete this.emojis;
         delete this.tempMap;
         

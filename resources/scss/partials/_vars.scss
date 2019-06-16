@@ -5,13 +5,16 @@ $break-mobile: 768px;
 // Sizing
 $max-width: 1024px;
 $spacing: 1rem;
+$spacing--half: $spacing/2;
 
 // Typography
 $font-size: 18px;
 $font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
 // Colors
-$white: #FFF;
+$white: darken(#FFF, 2%);
 $black: #000;
 $text: #333;
-$accent: hotpink;
+$accent-light: #00d2ff;
+$accent-dark: #3a7bd5;
+$accent-alt: #d5513a;

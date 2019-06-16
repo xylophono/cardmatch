@@ -2,6 +2,9 @@ html, body {
     font-family: 'Overpass', $font-stack;
     font-weight: 400;
     font-size: $font-size;
+    @media screen and (max-width: $break-mobile) {
+        font-size: $font-size*0.8;
+    }
     color: $text;
     line-height: 1;
 }
@@ -19,12 +22,58 @@ p {
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5 , .h5, h6, .h6 {
-    font-family: 'Chivo', $font-stack;
+    font-family: 'Comfortaa', $font-stack;
     font-weight: 900;
-    color: $accent;
+    color: $accent-dark;
 
     margin: 0;
     padding: 0;
 
     line-height: inherit;
+}
+
+h1, .h1 {
+    font-size: 2rem;
+}
+
+a {
+    &, &:hover, &:focus, &:active, &:visited {
+        color: $accent-dark;
+        font-weight: inherit;
+        text-decoration: underline;
+    }
+}
+
+a.about-link {
+    &, &:hover, &:focus, &:active, &:visited {
+        color: $white;
+    }
+}
+
+.text--medium {
+    font-weight: 400!important;
+}
+
+.text--white {
+    color: $white!important;
+}
+
+.button {
+    padding: 0 $spacing;
+    margin: 0;
+    background-color: $white;
+    color: $accent-dark;
+    border: 2px solid transparent;
+    border-radius: $spacing--half;
+    font-family: inherit;
+    font-size: 1rem;
+    height: 2rem;
+    line-height: 2rem;
+    cursor: pointer;
+
+    &:focus, &:hover {
+        outline: none;
+        transform: scale(1.05);
+    }
+    
 }

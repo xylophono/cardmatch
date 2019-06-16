@@ -114,11 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
   props: {
     id: Number,
     emoji: String
@@ -129,7 +125,16 @@ __webpack_require__.r(__webpack_exports__);
 
       // We're only doing anything if the card hasn't already been matched and we don't already have 2 active cards
       if (!this.$root.gameData.cards[this.id].matched && this.$root.gameData.active.length < 2) {
-        // Activate the card and add to the active array
+        //Start the timer if this is the first click
+        if (this.$root.gameData.clicks == 0) {
+          window.gameTimer = setInterval(function () {
+            _this.$root.gameData.time++;
+          }, 1000);
+        } //Incriment the clicks
+
+
+        this.$root.gameData.clicks++; // Activate the card and add to the active array
+
         this.$root.gameData.cards[this.id].active = true;
         this.$root.gameData.active.push(this.id); //If there's only one card active we can just carry on
 
@@ -146,7 +151,14 @@ __webpack_require__.r(__webpack_exports__);
             _this.$root.gameData.cards[card].matched = true;
             _this.$root.gameData.cards[card].active = false;
           });
-          this.$root.gameData.active = [];
+          this.$root.gameData.active = []; //Decrease remaining pairs, end game if none left
+
+          this.$root.gameData.remaining--;
+
+          if (this.$root.gameData.remaining == 0) {
+            this.endGame();
+          }
+
           return;
         } // We're gonna throw a lil delay on resetting the unmatched cards so users have time to process it not being a match
 
@@ -158,9 +170,379 @@ __webpack_require__.r(__webpack_exports__);
           _this.$root.gameData.active = [];
         }, 500);
       }
+    },
+    endGame: function endGame() {
+      //Stop the timer
+      clearInterval(window.gameTimer); //CONFETTI
+
+      this.$root.confetti({
+        particleCount: 200,
+        angle: 90,
+        spread: 75,
+        startVelocity: 50,
+        ticks: 300
+      });
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameGrid.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GameGrid.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/GameCard.vue */ "./resources/js/components/GameCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    GameCard: _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {};
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/canvas-confetti/dist/confetti.module.mjs":
+/*!***************************************************************!*\
+  !*** ./node_modules/canvas-confetti/dist/confetti.module.mjs ***!
+  \***************************************************************/
+/*! exports provided: default, create */
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
+// canvas-confetti v0.2.1 built on 2019-04-28T18:34:51.101Z
+var module = {};
+
+// source content
+(function () {
+  var frame = (function(){
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function (cb) {
+        window.setTimeout(cb, 1000 / 60);
+      };
+  }());
+
+  var defaults = {
+    particleCount: 50,
+    angle: 90,
+    spread: 45,
+    startVelocity: 45,
+    decay: 0.9,
+    ticks: 200,
+    x: 0.5,
+    y: 0.5,
+    zIndex: 100,
+    colors: [
+      '#26ccff',
+      '#a25afd',
+      '#ff5e7e',
+      '#88ff5a',
+      '#fcff42',
+      '#ffa62d',
+      '#ff36ff'
+    ]
+  };
+
+  function noop() {}
+
+  // create a promise if it exists, otherwise, just
+  // call the function directly
+  function promise(func) {
+    if (module.exports.Promise) {
+      return new module.exports.Promise(func);
+    }
+
+    func(noop, noop);
+
+    return null;
+  }
+
+  function convert(val, transform) {
+    return transform ? transform(val) : val;
+  }
+
+  function isOk(val) {
+    return !(val === null || val === undefined);
+  }
+
+  function prop(options, name, transform) {
+    return convert(
+      options && isOk(options[name]) ? options[name] : defaults[name],
+      transform
+    );
+  }
+
+  function toDecimal(str) {
+    return parseInt(str, 16);
+  }
+
+  function hexToRgb(str) {
+    var val = String(str).replace(/[^0-9a-f]/gi, '');
+
+    if (val.length < 6) {
+        val = val[0]+val[0]+val[1]+val[1]+val[2]+val[2];
+    }
+
+    return {
+      r: toDecimal(val.substring(0,2)),
+      g: toDecimal(val.substring(2,4)),
+      b: toDecimal(val.substring(4,6))
+    };
+  }
+
+  function getOrigin(options) {
+    var origin = prop(options, 'origin', Object);
+    origin.x = prop(origin, 'x', Number);
+    origin.y = prop(origin, 'y', Number);
+
+    return origin;
+  }
+
+  function setCanvasWindowSize(canvas) {
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+  }
+
+  function setCanvasRectSize(canvas) {
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+
+  function getCanvas(zIndex) {
+    var canvas = document.createElement('canvas');
+
+    setCanvasWindowSize(canvas);
+
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0px';
+    canvas.style.left = '0px';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = zIndex;
+
+    return canvas;
+  }
+
+  function randomPhysics(opts) {
+    var radAngle = opts.angle * (Math.PI / 180);
+    var radSpread = opts.spread * (Math.PI / 180);
+
+    return {
+      x: opts.x,
+      y: opts.y,
+      wobble: Math.random() * 10,
+      velocity: (opts.startVelocity * 0.5) + (Math.random() * opts.startVelocity),
+      angle2D: -radAngle + ((0.5 * radSpread) - (Math.random() * radSpread)),
+      tiltAngle: Math.random() * Math.PI,
+      color: hexToRgb(opts.color),
+      tick: 0,
+      totalTicks: opts.ticks,
+      decay: opts.decay,
+      random: Math.random() + 5,
+      tiltSin: 0,
+      tiltCos: 0,
+      wobbleX: 0,
+      wobbleY: 0
+    };
+  }
+
+  function updateFetti(context, fetti) {
+    fetti.x += Math.cos(fetti.angle2D) * fetti.velocity;
+    fetti.y += Math.sin(fetti.angle2D) * fetti.velocity + 3; // + gravity
+    fetti.wobble += 0.1;
+    fetti.velocity *= fetti.decay;
+    fetti.tiltAngle += 0.1;
+    fetti.tiltSin = Math.sin(fetti.tiltAngle);
+    fetti.tiltCos = Math.cos(fetti.tiltAngle);
+    fetti.random = Math.random() + 5;
+    fetti.wobbleX = fetti.x + (10 * Math.cos(fetti.wobble));
+    fetti.wobbleY = fetti.y + (10 * Math.sin(fetti.wobble));
+
+    var progress = (fetti.tick++) / fetti.totalTicks;
+
+    var x1 = fetti.x + (fetti.random * fetti.tiltCos);
+    var y1 = fetti.y + (fetti.random * fetti.tiltSin);
+    var x2 = fetti.wobbleX + (fetti.random * fetti.tiltCos);
+    var y2 = fetti.wobbleY + (fetti.random * fetti.tiltSin);
+
+    context.fillStyle = 'rgba(' + fetti.color.r + ', ' + fetti.color.g + ', ' + fetti.color.b + ', ' + (1 - progress) + ')';
+    context.beginPath();
+
+    context.moveTo(Math.floor(fetti.x), Math.floor(fetti.y));
+    context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1));
+    context.lineTo(Math.floor(x2), Math.floor(y2));
+    context.lineTo(Math.floor(x1), Math.floor(fetti.wobbleY));
+
+    context.closePath();
+    context.fill();
+
+    return fetti.tick < fetti.totalTicks;
+  }
+
+  function animate(canvas, fettis, isLibCanvas, allowResize, done) {
+    var animatingFettis = fettis.slice();
+    var context = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
+    var resizer = isLibCanvas ? setCanvasWindowSize : setCanvasRectSize;
+
+    function onResize() {
+      // don't actually query the size here, since this
+      // can execute frequently and rapidly
+      width = height = null;
+    }
+
+    var prom = promise(function (resolve) {
+      function onDone() {
+        if (allowResize) {
+          window.removeEventListener('resize', onResize);
+        }
+
+        done();
+        resolve();
+      }
+
+      function update() {
+        if (!width && !height) {
+          resizer(canvas);
+          width = canvas.width;
+          height = canvas.height;
+        }
+
+        context.clearRect(0, 0, width, height);
+
+        animatingFettis = animatingFettis.filter(function (fetti) {
+          return updateFetti(context, fetti);
+        });
+
+        if (animatingFettis.length) {
+          frame(update);
+        } else {
+          onDone();
+        }
+      }
+
+      frame(update);
+    });
+
+    if (allowResize) {
+      window.addEventListener('resize', onResize, false);
+    }
+
+    return {
+      addFettis: function (fettis) {
+        animatingFettis = animatingFettis.concat(fettis);
+
+        return prom;
+      },
+      canvas: canvas,
+      promise: prom
+    };
+  }
+
+  function confettiCannon(canvas, globalOpts) {
+    var isLibCanvas = !canvas;
+    var allowResize = !!prop(globalOpts || {}, 'resize');
+    var resized = false;
+    var animationObj;
+
+    return function fire(options) {
+      var particleCount = prop(options, 'particleCount', Math.floor);
+      var angle = prop(options, 'angle', Number);
+      var spread = prop(options, 'spread', Number);
+      var startVelocity = prop(options, 'startVelocity', Number);
+      var decay = prop(options, 'decay', Number);
+      var colors = prop(options, 'colors');
+      var ticks = prop(options, 'ticks', Number);
+      var zIndex = prop(options, 'zIndex', Number);
+      var origin = getOrigin(options);
+
+      var temp = particleCount;
+      var fettis = [];
+
+      if (isLibCanvas) {
+        canvas = animationObj ? animationObj.canvas : getCanvas(zIndex);
+      } else if (allowResize && !resized) {
+        // initialize the size of a user-supplied canvas
+        setCanvasRectSize(canvas);
+        resized = true;
+      }
+
+      var startX = canvas.width * origin.x;
+      var startY = canvas.height * origin.y;
+
+      while (temp--) {
+        fettis.push(
+          randomPhysics({
+            x: startX,
+            y: startY,
+            angle: angle,
+            spread: spread,
+            startVelocity: startVelocity,
+            color: colors[temp % colors.length],
+            ticks: ticks,
+            decay: decay
+          })
+        );
+      }
+
+      // if we have a previous canvas already animating,
+      // add to it
+      if (animationObj) {
+        return animationObj.addFettis(fettis);
+      }
+
+      if (isLibCanvas) {
+        document.body.appendChild(canvas);
+      }
+
+      animationObj = animate(canvas, fettis, isLibCanvas, (isLibCanvas || allowResize), function () {
+        animationObj = null;
+
+        if (isLibCanvas) {
+          document.body.removeChild(canvas);
+        }
+      });
+
+      return animationObj.promise;
+    };
+  }
+
+  module.exports = confettiCannon();
+  module.exports.create = confettiCannon;
+  module.exports.Promise = window.Promise || null;
+}());
+
+// end source content
+
+/* harmony default export */ __webpack_exports__["default"] = (module.exports);
+let create = module.exports.create;
+
 
 /***/ }),
 
@@ -655,7 +1037,6 @@ var render = function() {
         active: this.$root.gameData.cards[this.id].active,
         matched: this.$root.gameData.cards[this.id].matched
       },
-      attrs: { tabindex: "0" },
       on: {
         click: function($event) {
           return _vm.doClick()
@@ -671,6 +1052,40 @@ var render = function() {
         ])
       ])
     ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "game-grid" },
+    _vm._l(_vm.$root.gameData.cards, function(card, i) {
+      return _c("game-card", {
+        key: i,
+        attrs: { id: parseInt(i), emoji: card.emoji }
+      })
+    }),
+    1
   )
 }
 var staticRenderFns = []
@@ -12792,18 +13207,49 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/GameCard.vue */ "./resources/js/components/GameCard.vue");
+/* harmony import */ var _components_GameGrid_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/GameGrid.vue */ "./resources/js/components/GameGrid.vue");
 /* harmony import */ var _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/NewGame.js */ "./resources/js/classes/NewGame.js");
+/* harmony import */ var canvas_confetti__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! canvas-confetti */ "./node_modules/canvas-confetti/dist/confetti.module.mjs");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 
 
 var app = new Vue({
   el: '#app',
   components: {
-    GameCard: _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    GameGrid: _components_GameGrid_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: {
-    gameData: {}
+    gameData: {},
+    showAbout: false
+  },
+  computed: {
+    formattedTime: function formattedTime() {
+      var formatted = new Date(null);
+      formatted.setSeconds(this.gameData.time);
+      return formatted.toISOString().substr(14, 5);
+    }
+  },
+  methods: {
+    resetGame: function resetGame() {
+      var _this = this;
+
+      // We gotta unset the states before resetting the cards else the css transition will expose the new emoji positions
+      for (var i = 0; i < 16; i++) {
+        this.gameData.cards[i].active = false;
+        this.gameData.cards[i].matched = false;
+      }
+
+      ;
+      clearInterval(window.gameTimer);
+      window.setTimeout(function () {
+        _this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+      }, 250);
+    },
+    toggleAbout: function toggleAbout() {
+      this.showAbout = !this.showAbout;
+    },
+    confetti: canvas_confetti__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   created: function created() {
     this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
@@ -12828,15 +13274,19 @@ var _default = function _default() {
   _classCallCheck(this, _default);
 
   // Some data we're gonna retain
+  this.pairs = 8;
   this.cards = {};
-  this.active = []; // The emojis we can pick from
+  this.active = [];
+  this.remaining = this.pairs;
+  this.time = 0;
+  this.clicks = 0; // The emojis we can pick from
 
-  this.emojis = ['😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️']; // Shuffle emojis, grab 8
+  this.emojis = ['😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️']; // Shuffle emojis, grab the pairs
 
   this.emojis.sort(function () {
     return 0.5 - Math.random();
   });
-  this.emojis.splice(8); // Duplicate them, reshuffle
+  this.emojis.splice(this.pairs); // Duplicate them, reshuffle
 
   this.emojis = this.emojis.concat(this.emojis);
   this.emojis.sort(function () {
@@ -12860,8 +13310,10 @@ var _default = function _default() {
     } else {
       this.tempMap[this.emojis[i]] = i;
     }
-  }
+  } //Cleanup
 
+
+  delete this.pairs;
   delete this.emojis;
   delete this.tempMap;
 };
@@ -12934,6 +13386,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameCard_vue_vue_type_template_id_22f2268d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameCard_vue_vue_type_template_id_22f2268d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/GameGrid.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/GameGrid.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GameGrid.vue?vue&type=template&id=36652bc3& */ "./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3&");
+/* harmony import */ var _GameGrid_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GameGrid.vue?vue&type=script&lang=js& */ "./resources/js/components/GameGrid.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GameGrid_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/GameGrid.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/GameGrid.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/GameGrid.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameGrid_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GameGrid.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameGrid.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameGrid_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3& ***!
+  \*****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./GameGrid.vue?vue&type=template&id=36652bc3& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GameGrid.vue?vue&type=template&id=36652bc3&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GameGrid_vue_vue_type_template_id_36652bc3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

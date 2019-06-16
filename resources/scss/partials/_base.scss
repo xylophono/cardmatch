@@ -1,15 +1,72 @@
 html, body {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
 
     margin: 0;
     padding: 0;
-    background-color: $black;
+    background-color: $white;
     
 }
 
 body {
+    width: 100%;
     max-width: $max-width;
+    height: 100vh;
     margin: 0 auto;
     background-color: $white;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: stretch;
+
+    width: 100%;
+    height: 100%;
+
+    .container__header, .container__footer {
+        width: 100%;
+        height: auto;
+        flex: 0 0 auto;
+
+        padding: $spacing--half $spacing;
+
+        @media screen and (max-width: $break-mobile) {
+            padding: $spacing--half;
+        }
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        * {
+            flex: 0 0 auto;
+        }
+    }
+
+    .container__header {
+        border-radius: 0 0 $spacing--half $spacing--half;
+        background-color: $accent-dark;
+    }
+
+    .container__footer {
+        padding: $spacing*0.75 $spacing $spacing--half;
+        background-color: $accent-dark;
+        border-radius: $spacing--half $spacing--half 0 0;
+    }
+
+    .container__game {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        flex: 1 1 auto;
+
+        border-radius: $spacing $spacing 0 0;
+    }
 }
