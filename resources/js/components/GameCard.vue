@@ -19,13 +19,9 @@
 
 <script>
     export default {
-        data: function() {
-            return {
-            }
-        },
         props: {
             id: Number,
-            emoji: String
+            emoji: String,
         },
         methods: {
             doClick: function() {

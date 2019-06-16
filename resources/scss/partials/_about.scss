@@ -5,7 +5,7 @@
     background-color: $white;
     width: 100%;
     max-width: $max-width;
-    height: 0;
+    height: auto;
     max-height: 0;
     overflow: hidden;
     box-shadow: 0 0 20px 0 rgba($black, 0.2);
@@ -14,7 +14,7 @@
 
     text-align: center;
 
-    transition: all 400ms cubic-bezier(.57,.21,.69,1.25);
+    transition: all 500ms ease;
 
     .about__container {
         padding: $spacing*2 $spacing;
@@ -22,6 +22,5 @@
 
     &.about--active {
         max-height: 100vh;
-        height: auto;
     }
 }

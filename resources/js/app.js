@@ -1,13 +1,13 @@
 window.Vue = require('vue');
 
-import GameCard from './components/GameCard.vue';
+import GameGrid from './components/GameGrid.vue';
 import NewGame from './classes/NewGame.js';
 import confetti from 'canvas-confetti';
 
 const app = new Vue({
     el: '#app',
     components: {
-        GameCard,
+        GameGrid,
     },
     data: {
         gameData: {},
