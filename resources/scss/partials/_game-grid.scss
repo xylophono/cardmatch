@@ -6,7 +6,7 @@
 
     margin: 0;
 
-    padding: $spacing 0 $spacing $spacing;
+    padding: $spacing 0 0 $spacing;
 
     @media screen and (max-width: $break-mobile) {
         padding: $spacing--half 0 $spacing--half $spacing--half;
@@ -22,6 +22,7 @@
     .game-card {
 
         display: inline-block;
+        vertical-align: middle;
 
         width: calc((100% - #{$spacing}*4) / 4);
         height: calc((100% - #{$spacing}*4) / 4);
@@ -40,7 +41,7 @@
 
         cursor: pointer;
 
-        &:hover {
+        &:not(.matched):hover {
             transform: scale(1.05);
         }
 
@@ -48,20 +49,12 @@
             transform: rotateY(180deg);
 
             .game-card__back {
-                background-color: darken($white, 5%);
-                background-image: linear-gradient(135deg, darken($white, 2%), darken($white, 5%));
             }
         }
 
         &.matched .game-card__inner {
             transform: rotateY(180deg);
             cursor: default;
-
-            .game-card__back {
-                background-color: darken($white, 10%);
-                background-image: linear-gradient(135deg, darken($white, 7%), darken($white, 10%));
-
-            }
         }
 
         .game-card__inner {
@@ -90,6 +83,8 @@
             flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
+
+            box-shadow: 0 0 20px 0 rgba($black, 0.2);
         }
 
         .game-card__front {

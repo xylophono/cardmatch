@@ -1,6 +1,7 @@
 @import 'partials/_reset';
 
-* { box-sizing: border-box; };
+* { box-sizing: border-box; }
+[v-cloak] { display: none; }
 
 @import 'partials/_vars';
 @import 'partials/_base';

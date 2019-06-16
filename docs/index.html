@@ -3,19 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'">
 
     <title></title>
 
-    <link href="https://fonts.googleapis.com/css?family=Chivo:400,700,900|Overpass:300,400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700|Overpass:300,400,700&display=swap" rel="stylesheet">
     <script src="resources/js/app.js" defer></script>
     <link href="resources/css/app.css" rel="stylesheet">
 </head>
 <body>
 
-<div id="app" class="container">
+<div id="app" class="container" v-cloak>
     <nav class="container__header">
-        <button v-on:click="resetGame()">Restart</button>
+        <h1 class="text--white"><span class="text--medium">Emoji</span>Match</h1>
+        <button class="button" v-on:click="resetGame()">New Game</button>
     </nav>
     <main class="container__game">
         <div class="game-grid">
@@ -27,7 +28,12 @@
         </div>
     </main>
     <footer class="container__footer">
-        asdasd
+        <div>
+            <p class="text--white">Clicks: {{ gameData.clicks }}, Time: {{ formattedTime }}</p>
+        </div>
+        <div>
+            <p  class="text--white"><a href="">About</a></p>
+        </div>
     </footer>
 </div>
 

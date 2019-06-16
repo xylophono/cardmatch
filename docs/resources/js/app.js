@@ -128,7 +128,16 @@ __webpack_require__.r(__webpack_exports__);
 
       // We're only doing anything if the card hasn't already been matched and we don't already have 2 active cards
       if (!this.$root.gameData.cards[this.id].matched && this.$root.gameData.active.length < 2) {
-        // Activate the card and add to the active array
+        //Start the timer if this is the first click
+        if (this.$root.gameData.clicks == 0) {
+          window.gameTimer = setInterval(function () {
+            _this.$root.gameData.time++;
+          }, 1000);
+        } //Incriment the clicks
+
+
+        this.$root.gameData.clicks++; // Activate the card and add to the active array
+
         this.$root.gameData.cards[this.id].active = true;
         this.$root.gameData.active.push(this.id); //If there's only one card active we can just carry on
 
@@ -145,7 +154,14 @@ __webpack_require__.r(__webpack_exports__);
             _this.$root.gameData.cards[card].matched = true;
             _this.$root.gameData.cards[card].active = false;
           });
-          this.$root.gameData.active = [];
+          this.$root.gameData.active = []; //Decrease remaining pairs, end game if none left
+
+          this.$root.gameData.remaining--;
+
+          if (this.$root.gameData.remaining == 0) {
+            this.endGame();
+          }
+
           return;
         } // We're gonna throw a lil delay on resetting the unmatched cards so users have time to process it not being a match
 
@@ -157,6 +173,10 @@ __webpack_require__.r(__webpack_exports__);
           _this.$root.gameData.active = [];
         }, 500);
       }
+    },
+    endGame: function endGame() {
+      //Stop the timer
+      clearInterval(window.gameTimer);
     }
   }
 });
@@ -12803,6 +12823,13 @@ var app = new Vue({
   data: {
     gameData: {}
   },
+  computed: {
+    formattedTime: function formattedTime() {
+      var formatted = new Date(null);
+      formatted.setSeconds(this.gameData.time);
+      return formatted.toISOString().substr(14, 5);
+    }
+  },
   methods: {
     resetGame: function resetGame() {
       var _this = this;
@@ -12842,15 +12869,19 @@ var _default = function _default() {
   _classCallCheck(this, _default);
 
   // Some data we're gonna retain
+  this.pairs = 8;
   this.cards = {};
-  this.active = []; // The emojis we can pick from
+  this.active = [];
+  this.remaining = this.pairs;
+  this.time = 0;
+  this.clicks = 0; // The emojis we can pick from
 
-  this.emojis = ['😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️']; // Shuffle emojis, grab 8
+  this.emojis = ['😃', '😂', '😍', '👿', '💩', '👻', '👌', '🤘', '👀', '🤷', '💥', '🐵', '🐶', '🐯', '🦄', '🐧', '🐍', '🌷', '🦀', '🌈', '🔥', '🍓', '🍄', '🍔', '🍕', '🥤', '🏆', '🏀', '🏓', '🎮', '🎲', '✈️', '🚀', '💣', '🎈', '📷', '❤️']; // Shuffle emojis, grab the pairs
 
   this.emojis.sort(function () {
     return 0.5 - Math.random();
   });
-  this.emojis.splice(8); // Duplicate them, reshuffle
+  this.emojis.splice(this.pairs); // Duplicate them, reshuffle
 
   this.emojis = this.emojis.concat(this.emojis);
   this.emojis.sort(function () {
@@ -12874,8 +12905,10 @@ var _default = function _default() {
     } else {
       this.tempMap[this.emojis[i]] = i;
     }
-  }
+  } //Cleanup
 
+
+  delete this.pairs;
   delete this.emojis;
   delete this.tempMap;
 };

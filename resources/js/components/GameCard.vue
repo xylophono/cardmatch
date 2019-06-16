@@ -31,6 +31,16 @@
             doClick: function() {
                 // We're only doing anything if the card hasn't already been matched and we don't already have 2 active cards
                 if(!this.$root.gameData.cards[this.id].matched && this.$root.gameData.active.length < 2) {
+
+                    //Start the timer if this is the first click
+                    if(this.$root.gameData.clicks == 0) {
+                        window.gameTimer = setInterval(() => {
+                            this.$root.gameData.time++;
+                        }, 1000);
+                    }
+                    
+                    //Incriment the clicks
+                    this.$root.gameData.clicks++;
                     
                     // Activate the card and add to the active array
                     this.$root.gameData.cards[this.id].active = true;
@@ -53,6 +63,12 @@
 
                         this.$root.gameData.active = [];
 
+                        //Decrease remaining pairs, end game if none left
+                        this.$root.gameData.remaining--;
+                        if(this.$root.gameData.remaining == 0) {
+                            this.endGame();
+                        }
+
                         return;
                     }
 
@@ -68,6 +84,11 @@
 
 
                 }
+            },
+
+            endGame: function() {
+                //Stop the timer
+                clearInterval(window.gameTimer);
             }
         }
     }

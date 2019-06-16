@@ -12,6 +12,13 @@ const app = new Vue({
     data: {
         gameData: {}
     },
+    computed: {
+        formattedTime: function() {
+            let formatted = new Date(null);
+            formatted.setSeconds(this.gameData.time);
+            return formatted.toISOString().substr(14,5);
+        }
+    },
     methods: {
         resetGame: function(){
             // We gotta unset the states before resetting the cards else the css transition will expose the new emoji positions

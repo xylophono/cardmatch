@@ -37,15 +37,26 @@ body {
         @media screen and (max-width: $break-mobile) {
             padding: $spacing--half;
         }
-        
-        background-color: $accent-dark;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        * {
+            flex: 0 0 auto;
+        }
     }
 
     .container__header {
         border-radius: 0 0 $spacing--half $spacing--half;
+        background-color: $accent-dark;
     }
 
     .container__footer {
+        padding: $spacing $spacing $spacing--half;
+        background-color: $accent-dark;
         border-radius: $spacing--half $spacing--half 0 0;
     }
 
@@ -54,5 +65,7 @@ body {
         height: auto;
         max-height: 100%;
         flex: 1 1 auto;
+
+        border-radius: $spacing $spacing 0 0;
     }
 }
