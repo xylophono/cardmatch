@@ -13156,7 +13156,8 @@ var app = new Vue({
     GameCard: _components_GameCard_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: {
-    gameData: {}
+    gameData: {},
+    showAbout: false
   },
   computed: {
     formattedTime: function formattedTime() {
@@ -13176,9 +13177,13 @@ var app = new Vue({
       }
 
       ;
+      clearInterval(window.gameTimer);
       window.setTimeout(function () {
         _this.gameData = new _classes_NewGame_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
       }, 250);
+    },
+    toggleAbout: function toggleAbout() {
+      this.showAbout = !this.showAbout;
     },
     confetti: canvas_confetti__WEBPACK_IMPORTED_MODULE_2__["default"]
   },

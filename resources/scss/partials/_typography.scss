@@ -32,8 +32,22 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5 , .h5, h6, .h6 {
     line-height: inherit;
 }
 
-h1 {
+h1, .h1 {
     font-size: 2rem;
+}
+
+a {
+    &, &:hover, &:focus, &:active, &:visited {
+        color: $accent-dark;
+        font-weight: inherit;
+        text-decoration: underline;
+    }
+}
+
+a.about-link {
+    &, &:hover, &:focus, &:active, &:visited {
+        color: $white;
+    }
 }
 
 .text--medium {

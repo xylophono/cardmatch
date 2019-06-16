@@ -10,7 +10,8 @@ const app = new Vue({
         GameCard,
     },
     data: {
-        gameData: {}
+        gameData: {},
+        showAbout: false,
     },
     computed: {
         formattedTime: function() {
@@ -27,10 +28,15 @@ const app = new Vue({
                 this.gameData.cards[i].matched = false;
             };
 
+            clearInterval(window.gameTimer);
+
             window.setTimeout(() => {
                 this.gameData = new NewGame();
             }, 250)
+        },
 
+        toggleAbout: function(){
+            this.showAbout = !this.showAbout;
         },
 
         confetti: confetti,

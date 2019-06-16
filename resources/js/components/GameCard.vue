@@ -5,7 +5,7 @@
             active: this.$root.gameData.cards[this.id].active,
             matched: this.$root.gameData.cards[this.id].matched,
         }"
-        v-on:click="doClick()"
+        @click="doClick()"
     >
         <div class="game-card__inner">
             <div class="game-card__front">
