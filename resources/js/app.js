@@ -43,5 +43,9 @@ const app = new Vue({
     },
     created: function() {
         this.gameData = new NewGame();
+    },
+    mounted: function() {
+        //We're gonna scroll to bottom on load to get rid of nav bars on mobile
+        window.scrollTo(0,document.body.scrollHeight);
     }
 });
