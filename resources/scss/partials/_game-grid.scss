@@ -9,7 +9,7 @@
     padding: $spacing 0 0 $spacing;
 
     @media screen and (max-width: $break-mobile) {
-        padding: $spacing--half 0 $spacing--half $spacing--half;
+        padding: $spacing--half 0 0 $spacing--half;
     }
 
     *, *:focus, *:hover {

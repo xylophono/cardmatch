@@ -1,8 +1,8 @@
 window.Vue = require('vue');
 
 import GameCard from './components/GameCard.vue';
-
 import NewGame from './classes/NewGame.js';
+import confetti from 'canvas-confetti';
 
 const app = new Vue({
     el: '#app',
@@ -31,7 +31,9 @@ const app = new Vue({
                 this.gameData = new NewGame();
             }, 250)
 
-        }
+        },
+
+        confetti: confetti,
     },
     created: function() {
         this.gameData = new NewGame();

@@ -89,6 +89,15 @@
             endGame: function() {
                 //Stop the timer
                 clearInterval(window.gameTimer);
+
+                //CONFETTI
+                this.$root.confetti({
+                    particleCount: 200,
+                    angle: 90,
+                    spread: 75,
+                    startVelocity: 50,
+                    ticks: 300
+                });
             }
         }
     }

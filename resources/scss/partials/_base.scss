@@ -55,7 +55,7 @@ body {
     }
 
     .container__footer {
-        padding: $spacing $spacing $spacing--half;
+        padding: $spacing*0.75 $spacing $spacing--half;
         background-color: $accent-dark;
         border-radius: $spacing--half $spacing--half 0 0;
     }
